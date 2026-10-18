@@ -8,4 +8,5 @@ mkdir -p dist
 OUT="dist/page-to-markdown-v${VERSION}.zip"
 rm -f "$OUT"
 (cd extension && zip -qr -X "../$OUT" . -x '.*' -x '__MACOSX')
+zip -qj "$OUT" LICENSE
 echo "Built $OUT"
