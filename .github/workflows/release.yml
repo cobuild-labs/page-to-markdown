@@ -1,24 +1,33 @@
 name: Release
+# Publishing a release on GitHub (with a tag like v1.5.0) builds the extension
+# zip and attaches it to that release.
 on:
-  push:
-    tags: ['v*']
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to attach the zip to (for example v1.5.0)
+        required: true
 permissions:
   contents: write
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - name: Check the tag matches the extension version
-        run: test "${GITHUB_REF_NAME#v}" = "$(node -p "require('./extension/manifest.json').version")"
+        run: test "${TAG#v}" = "$(node -p "require('./extension/manifest.json').version")"
       - name: Build
         run: bash scripts/build.sh
-      - name: Publish the release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*.zip
-          body_path: .github/release-notes.md
-          fail_on_unmatched_files: true
+      - name: Attach the zip to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" dist/*.zip --clobber
