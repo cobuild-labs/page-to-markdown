@@ -1,0 +1,11 @@
+{
+  "name": "page-to-markdown",
+  "version": "1.5.0",
+  "private": true,
+  "description": "Turn any web page, multi-page thread, AI chat or video captions into clean Markdown.",
+  "license": "MIT",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "build": "bash scripts/build.sh"
+  }
+}

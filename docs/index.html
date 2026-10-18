@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page to Markdown</title>
+<meta name="description" content="A free Chrome extension that turns any web page, multi-page thread, AI chat or video captions into clean Markdown. Runs entirely in your browser.">
+<meta property="og:title" content="Page to Markdown">
+<meta property="og:description" content="Any page, as clean Markdown. Web pages, whole threads, AI chats and video captions, in one click.">
+<meta property="og:image" content="https://cobuild-labs.github.io/page-to-markdown/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F2F4F8; --surface: #FFFFFF; --sunk: #E7EBF2; --ink: #0F1730; --muted: #55607A; --line: #D5DBE7;
+  --cobalt: #1E4BD8; --cobalt-soft: #E3EAFD; --syntax: #1E4BD8; --amber: #8F5200; --amber-soft: #FCEFD9; --coffee: #FFC21A;
+  --ok: #1F6B3A; --code-bg: #0F1730; --code-ink: #E8EDF8; --code-dim: #8E9AB8; --code-key: #8FA9FF;
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --shadow: 0 1px 2px rgba(15,23,48,.06), 0 18px 40px -18px rgba(15,23,48,.22);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1020; --surface: #131A2E; --sunk: #1A2238; --ink: #E8EDF8; --muted: #9AA4BC; --line: #26304A;
+    --cobalt: #4D74F0; --cobalt-soft: #1B2648; --syntax: #8FA9FF; --amber: #F2B65A; --amber-soft: #2A2112; --ok: #6FD08F;
+    --code-bg: #070B17; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 18px 40px -18px rgba(0,0,0,.6); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1020; --surface: #131A2E; --sunk: #1A2238; --ink: #E8EDF8; --muted: #9AA4BC; --line: #26304A;
+  --cobalt: #4D74F0; --cobalt-soft: #1B2648; --syntax: #8FA9FF; --amber: #F2B65A; --amber-soft: #2A2112; --ok: #6FD08F;
+  --code-bg: #070B17; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 18px 40px -18px rgba(0,0,0,.6); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.mono { font-family: var(--mono); }
+.syn { color: var(--syntax); font-family: var(--mono); font-weight: 600; }
+
+/* nav */
+nav { position: sticky; top: 0; z-index: 10; backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); background: color-mix(in srgb, var(--bg) 78%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); }
+nav .wrap { display: flex; align-items: center; gap: 22px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; font-family: var(--display); font-size: 18px; letter-spacing: -.01em; }
+.brand img { width: 28px; height: 28px; }
+nav .links { display: flex; gap: 20px; margin-left: auto; font-size: 15px; }
+nav .links a { text-decoration: none; color: var(--muted); }
+nav .links a:hover { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 16px; text-decoration: none; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); transition: transform .15s cubic-bezier(.2,.8,.2,1), background .15s, border-color .15s; }
+.btn:hover { border-color: var(--muted); }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.small { padding: 8px 14px; font-size: 14px; border-radius: 10px; }
+@media (max-width: 760px) { nav .links { display: none; } nav .btn { margin-left: auto; } }
+
+/* hero */
+.hero { padding: 76px 0 40px; }
+.eyebrow { font-family: var(--mono); font-size: 14px; color: var(--muted); }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(46px, 8.4vw, 104px); line-height: .95; letter-spacing: -.04em; margin: 18px 0 0; max-width: 12ch; }
+h1 .syn { font-size: .8em; letter-spacing: 0; margin-right: .16em; }
+.lede { font-size: clamp(18px, 2.2vw, 22px); color: var(--muted); max-width: 40ch; margin: 26px 0 0; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+.meta { margin-top: 18px; font-size: 14px; color: var(--muted); display: flex; gap: 18px; flex-wrap: wrap; }
+.meta span::before { content: "✓ "; color: var(--ok); font-weight: 700; }
+
+/* demo (signature) */
+.demo { margin-top: 56px; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow); overflow: hidden; }
+.tabs { display: flex; gap: 4px; padding: 10px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tab { font: inherit; font-size: 15px; font-weight: 600; padding: 9px 14px; border-radius: 10px; border: 0; background: transparent; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.tab[aria-selected="true"] { background: var(--cobalt-soft); color: var(--cobalt); }
+.tab:hover { color: var(--ink); }
+.panes { display: grid; grid-template-columns: 1fr 1fr; min-height: 380px; }
+.before { padding: 26px 28px; border-right: 1px solid var(--line); position: relative; }
+.after { background: var(--code-bg); color: var(--code-ink); padding: 26px 28px; font-family: var(--mono); font-size: 14.5px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; position: relative; }
+.label { position: absolute; top: 12px; right: 16px; font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.after .label { color: var(--code-dim); }
+.after .k { color: var(--code-key); } .after .d { color: var(--code-dim); }
+.caret { display: inline-block; width: 8px; height: 1.1em; background: var(--code-key); vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.mock h4 { margin: 4px 0 10px; font-family: var(--display); font-size: 22px; letter-spacing: -.01em; }
+.mock p { margin: 0 0 10px; font-size: 15px; }
+.mock .junk { font-family: var(--mono); font-size: 12px; color: var(--amber); background: repeating-linear-gradient(135deg, var(--amber-soft) 0 8px, transparent 8px 16px); border: 1.5px dashed color-mix(in srgb, var(--amber) 55%, transparent); border-radius: 10px; padding: 10px 12px; margin: 12px 0; text-decoration: line-through; }
+.post { border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin-bottom: 10px; font-size: 14.5px; }
+.post b { font-size: 13.5px; } .post small { color: var(--muted); margin-left: 6px; }
+.post blockquote { margin: 6px 0; padding: 4px 10px; border-left: 3px solid var(--line); color: var(--muted); font-size: 13.5px; }
+.bubble { padding: 10px 14px; border-radius: 14px; margin-bottom: 10px; font-size: 14.5px; max-width: 90%; }
+.bubble.me { background: var(--sunk); margin-left: auto; }
+.step { font-family: var(--mono); font-size: 12.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; margin-bottom: 10px; }
+.video { aspect-ratio: 16/9; border-radius: 14px; background: linear-gradient(135deg, #1B2648, #0F1730); position: relative; display: grid; place-items: center; color: #fff; }
+.video .play { width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,.16); display: grid; place-items: center; }
+.video .cc { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,.72); padding: 4px 10px; border-radius: 6px; font-size: 13.5px; white-space: nowrap; }
+@media (max-width: 760px) { .panes { grid-template-columns: 1fr; } .before { border-right: 0; border-bottom: 1px solid var(--line); } }
+
+/* sections */
+section { padding: 84px 0 0; }
+h2 { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 4.6vw, 52px); line-height: 1.02; letter-spacing: -.03em; margin: 0; max-width: 18ch; }
+.sub { color: var(--muted); font-size: 19px; max-width: 56ch; margin: 16px 0 0; }
+.uses { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 40px; }
+.use { padding: 20px 0; border-top: 1px solid var(--line); }
+.use h3 { margin: 0 0 6px; font-size: 19px; letter-spacing: -.01em; }
+.use p { margin: 0; color: var(--muted); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+@media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+.small-h { font-family: var(--mono); font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin: 44px 0 0; }
+
+.features { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.feat { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 20px 18px; }
+.feat .tag { font-family: var(--mono); font-size: 13px; color: var(--syntax); font-weight: 600; }
+.feat h3 { margin: 8px 0 6px; font-size: 18px; letter-spacing: -.01em; }
+.feat p { margin: 0; color: var(--muted); font-size: 15.5px; }
+.beta { font-family: var(--mono); font-size: 11px; color: var(--cobalt); background: var(--cobalt-soft); padding: 2px 6px; border-radius: 5px; vertical-align: 2px; margin-left: 4px; }
+
+.code { background: var(--code-bg); color: var(--code-ink); border-radius: 20px; padding: 24px 26px; font-family: var(--mono); font-size: 14px; line-height: 1.75; white-space: pre-wrap; overflow-x: auto; box-shadow: var(--shadow); }
+.code .k { color: var(--code-key); } .code .d { color: var(--code-dim); }
+table.sites { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 16px; }
+table.sites td { padding: 14px 0; border-top: 1px solid var(--line); vertical-align: top; }
+table.sites td:first-child { font-weight: 600; width: 34%; padding-right: 16px; }
+table.sites td:last-child { color: var(--muted); }
+
+.privacy { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 36px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: center; }
+.privacy ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: 17px; }
+.privacy li::before { content: "✓"; color: var(--ok); font-weight: 700; margin-right: 10px; }
+@media (max-width: 860px) { .privacy { grid-template-columns: 1fr; padding: 26px; } }
+
+ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 32px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+ol.steps li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px; font-size: 16px; }
+ol.steps li::before { content: counter(s); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--cobalt); color: #fff; font-family: var(--mono); font-weight: 600; font-size: 14px; margin-bottom: 12px; }
+ol.steps code { font-family: var(--mono); font-size: 14px; background: var(--sunk); padding: 1px 6px; border-radius: 6px; }
+
+.coffee { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 30px; }
+.cup { display: flex; flex-direction: column; gap: 4px; text-decoration: none; background: var(--surface); border: 1.5px solid var(--line); border-radius: 18px; padding: 18px; transition: transform .15s cubic-bezier(.2,.8,.2,1), border-color .15s; }
+.cup:hover { border-color: var(--coffee); transform: translateY(-2px); }
+.cup .price { font-family: var(--display); font-weight: 800; font-size: 30px; letter-spacing: -.02em; }
+.cup b { font-size: 16px; } .cup small { color: var(--muted); font-size: 14.5px; }
+.cup.pick { border-color: var(--coffee); background: color-mix(in srgb, var(--coffee) 12%, var(--surface)); }
+.feedback { margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+footer { margin-top: 96px; padding: 34px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 15px; }
+footer .wrap { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
+footer .made { display: flex; align-items: center; gap: 10px; }
+footer .made svg { width: 22px; height: 22px; }
+footer nav { all: unset; display: flex; gap: 18px; margin-left: auto; flex-wrap: wrap; }
+footer a { text-decoration: none; } footer a:hover { color: var(--ink); }
+
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .caret { animation: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/icon.svg" alt="">Page to Markdown</a>
+    <div class="links"><a href="#ai">For AI</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#support">Support</a><a href="https://github.com/cobuild-labs/page-to-markdown">GitHub</a></div>
+    <a class="btn small primary" href="https://github.com/cobuild-labs/page-to-markdown/releases/latest">Download</a>
+  </div>
+</nav>
+
+<main id="top">
+  <div class="wrap hero">
+    <div class="eyebrow">Free Chrome extension · v1.5.0</div>
+    <h1><span class="syn">#</span>Any page,<br>as clean Markdown.</h1>
+    <p class="lede">Web pages, whole forum threads, AI chats and video captions, saved as one tidy <span class="mono">.md</span> file in a single click.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/cobuild-labs/page-to-markdown/releases/latest">Download for Chrome</a>
+      <a class="btn" href="https://github.com/cobuild-labs/page-to-markdown">★ Star on GitHub</a>
+    </div>
+    <div class="meta"><span>Free and open source</span><span>Nothing leaves your browser</span><span>Chrome, Edge, Brave, Arc</span></div>
+
+    <div class="demo reveal" aria-label="Examples of what it makes">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-k="page">A web page</button>
+        <button class="tab" role="tab" aria-selected="false" data-k="thread">A 10-page thread</button>
+        <button class="tab" role="tab" aria-selected="false" data-k="ai">An AI chat</button>
+        <button class="tab" role="tab" aria-selected="false" data-k="cc">A video's captions</button>
+      </div>
+      <div class="panes">
+        <div class="before mock" id="before"></div>
+        <div class="after" id="after" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="ai" class="wrap reveal">
+    <div class="small-h">Made for working with AI</div>
+    <h2>Give your AI the whole page, not a messy paste.</h2>
+    <p class="sub">Markdown is the format AI tools read best. It keeps the structure (headings, lists, tables, who said what) and drops the HTML and clutter that waste tokens and confuse the model.</p>
+    <div class="uses">
+      <div class="use"><h3>Feed real data into your analysis</h3><p>Turn a 10-page thread, a long directory or a pile of reviews into one file, then ask Claude, ChatGPT, Gemini or NotebookLM about all of it.</p></div>
+      <div class="use"><h3>Reach pages your AI can't open</h3><p>Pages behind your login, built with JavaScript or split over many pages are read in your own browser, exactly as you see them.</p></div>
+      <div class="use"><h3>Hand work from one AI to another</h3><p>Export a chat with every search, script and result behind it, so the next chat picks up where the last one left off.</p></div>
+      <div class="use"><h3>Learn from videos faster</h3><p>Save a lecture's captions as clean paragraphs, then ask an AI to summarise them, make notes or quiz you.</p></div>
+      <div class="use"><h3>Spend fewer tokens</h3><p>A cleaned-up file is a fraction of the raw page's size, so more of what matters fits in the context window.</p></div>
+      <div class="use"><h3>And when you're not using AI</h3><p>Save articles to Obsidian or Notion, archive a whole discussion in order, or keep a readable copy that won't break like a bookmark.</p></div>
+    </div>
+  </section>
+
+  <section id="features" class="wrap reveal">
+    <div class="small-h">Features</div>
+    <h2>One button, a lot of thought behind it.</h2>
+    <div class="features">
+      <div class="feat"><div class="tag">page.md</div><h3>Any page</h3><p>Headings, lists, tables, code and links survive. Highlight text first to convert just that part.</p></div>
+      <div class="feat"><div class="tag">1 → 10</div><h3>Whole threads and lists</h3><p>Follows page numbers, "Next" links or "Load more" buttons and stitches every page into one file.</p></div>
+      <div class="feat"><div class="tag">### #22</div><h3>Forums, post by post</h3><p>XenForo, Discourse, phpBB and vBulletin: number, author and date for every post, quotes kept as quotes.</p></div>
+      <div class="feat"><div class="tag">[Step 3]</div><h3>AI chats</h3><p>Claude, ChatGPT, Gemini and Grok, with thinking, tool calls and sources if you want them.</p></div>
+      <div class="feat"><div class="tag">CC → ¶</div><h3>Captions to Markdown</h3><p>YouTube, Vimeo and most HTML5 players. Clean paragraphs, no timestamps.</p></div>
+      <div class="feat"><div class="tag">− ads</div><h3>Cleaned-up version <span class="beta">BETA</span></h3><p>Leaves out ads, menus, sidebars, cookie banners and newsletter boxes.</p></div>
+      <div class="feat"><div class="tag">⌘ copy</div><h3>Copy instead of save</h3><p>Straight to your clipboard, ready to paste into a chat.</p></div>
+      <div class="feat"><div class="tag">---</div><h3>Your files, your way</h3><p>File name patterns, Obsidian-style front matter, shortcuts, right-click menus and dark mode.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap reveal">
+    <div class="two">
+      <div>
+        <div class="small-h" style="margin-top:0">AI chat export</div>
+        <h2>The chat, and everything behind it.</h2>
+        <p class="sub">Choose chat only, or the full record: thinking, every tool or script with its exact input, what came back, and the sources. Each piece is labelled so another AI can read it at a glance.</p>
+        <table class="sites">
+          <tr><td>Claude</td><td>The most complete. Behind "Searched the web" you get the exact query, the full result, errors and citations, in order.</td></tr>
+          <tr><td>ChatGPT, Gemini, Grok</td><td>Opens their collapsed thinking, "Worked for…" and Sources panels and exports what they show.</td></tr>
+        </table>
+      </div>
+      <div class="code" aria-label="Example AI chat export"><span class="k">##</span> You
+Compare these two cards on forex fees.
+
+<span class="k">##</span> Assistant
+
+<span class="k">[Thinking]</span>
+<span class="d">I should check both issuers' current fee pages.</span>
+
+<span class="k">[Step 1: tool web_search]</span>
+query: "card A foreign transaction fee"
+
+<span class="k">[Result of web_search]</span>
+<span class="d">1. Card A rates and charges · bank.example…</span>
+
+Card A charges <span class="k">**</span>0%<span class="k">**</span> on foreign spend,
+card B charges 1%. <span class="d">[1]</span>
+
+<span class="k">Sources</span>
+<span class="k">-</span> [Card A rates and charges](https://…)</div>
+    </div>
+  </section>
+
+  <section id="privacy" class="wrap reveal">
+    <div class="privacy">
+      <div>
+        <div class="small-h" style="margin-top:0">Privacy</div>
+        <h2>Your pages never leave your computer.</h2>
+        <p class="sub">Everything is read inside your own browser tab and saved straight to your Downloads or clipboard. There's nothing to sign up for and nowhere for your data to go.</p>
+      </div>
+      <ul>
+        <li>No account or sign-in</li>
+        <li>No analytics, telemetry or tracking</li>
+        <li>No servers, nothing is uploaded</li>
+        <li>Open source, so you can check every line</li>
+        <li><a href="https://github.com/cobuild-labs/page-to-markdown/blob/main/PRIVACY.md">Read the full privacy policy</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="install" class="wrap reveal">
+    <div class="small-h">Install</div>
+    <h2>Up and running in a minute.</h2>
+    <ol class="steps">
+      <li>Download <a href="https://github.com/cobuild-labs/page-to-markdown/releases/latest"><b>the latest zip</b></a> and unzip it.</li>
+      <li>Open <code>chrome://extensions</code> and switch on <b>Developer mode</b>.</li>
+      <li>Click <b>Load unpacked</b> and choose the unzipped folder.</li>
+      <li>Pin it from the puzzle-piece menu, then press <code>Alt</code> <code>Shift</code> <code>M</code> on any page.</li>
+    </ol>
+  </section>
+
+  <section id="support" class="wrap reveal">
+    <div class="small-h">Support</div>
+    <h2>Free forever. Coffee appreciated.</h2>
+    <p class="sub">No ads, no paid tier, no data to sell. If Page to Markdown saves you time, a coffee keeps the next feature coming.</p>
+    <div class="coffee">
+      <a class="cup" href="https://buy.stripe.com/dRmbJ2bJNfPWfwheUX00001"><span class="price">S$3</span><b>A small coffee</b><small>A quick espresso to keep me going.</small></a>
+      <a class="cup pick" href="https://buy.stripe.com/28EbJ2bJNeLS1FrfZ100002"><span class="price">S$10</span><b>A café coffee</b><small>A proper sit-down coffee while I build the next thing.</small></a>
+      <a class="cup" href="https://buy.stripe.com/6oUaEY9BFdHO83PfZ100003"><span class="price">S$100</span><b>A month of coffee</b><small>A whole month of mornings. You are a legend.</small></a>
+      <a class="cup" href="https://buy.stripe.com/3cI3cwg03fPWbg128b00004"><span class="price">Any</span><b>Your own amount</b><small>Whatever feels right.</small></a>
+    </div>
+    <h2 style="margin-top:64px;font-size:clamp(26px,3.4vw,36px)">Tell me what you think.</h2>
+    <p class="sub">What do you like, what's missing, which site came out wrong? Every piece of feedback gets read.</p>
+    <div class="feedback">
+      <a class="btn primary" href="https://github.com/cobuild-labs/page-to-markdown/discussions">Share feedback</a>
+      <a class="btn" href="https://github.com/cobuild-labs/page-to-markdown/issues/new/choose">Report a problem</a>
+      <a class="btn" href="https://github.com/cobuild-labs/page-to-markdown">★ Star on GitHub</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="made" href="https://thecobuild.pages.dev"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="15" height="15" rx="4" fill="#1E4BD8"/><rect x="11" y="11" width="15" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>Made by CoBuild</a>
+    <nav aria-label="Footer"><a href="https://github.com/cobuild-labs/page-to-markdown">GitHub</a><a href="https://github.com/cobuild-labs/page-to-markdown/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/cobuild-labs/page-to-markdown/blob/main/PRIVACY.md">Privacy</a><a href="https://github.com/cobuild-labs/page-to-markdown/blob/main/LICENSE">MIT license</a></nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var D = {
+    page: {
+      before: '<h4>How to brew pour-over coffee</h4><div class="junk">ADVERTISEMENT · 728×90</div><p>Good pour-over needs three things: fresh beans, the right grind and patience.</p><p><b>You will need:</b> a dripper, filters, a kettle and a scale.</p><div class="junk">Subscribe to our newsletter!</div>',
+      label: 'page.md',
+      md: '<span class="k">#</span> How to brew pour-over coffee\n<span class="d">Source: https://coffee.example.com/pour-over</span>\n\nGood pour-over needs three things: fresh beans,\nthe right grind and patience.\n\n<span class="k">**</span>You will need:<span class="k">**</span> a dripper, filters, a kettle\nand a scale.'
+    },
+    thread: {
+      before: '<div class="post"><b>milesmaven</b><small>#1 · Mar 3</small><div>Which travel card has the lowest forex fee?</div></div><div class="post"><b>wanderlist</b><small>#2 · Mar 3</small><blockquote>milesmaven said: lowest forex fee?</blockquote><div>Card A, 0%. Nothing else comes close.</div></div><div class="post"><b>pointsnerd</b><small>#21 · page 2</small><div>Check the annual fee waiver first.</div></div>',
+      label: 'thread.md · 10 pages',
+      md: '<span class="k">###</span> #1 | milesmaven | Mar 3\nWhich travel card has the lowest forex fee?\n\n<span class="k">###</span> #2 | wanderlist | Mar 3\n<span class="k">&gt;</span> <span class="d">milesmaven said:</span>\n<span class="k">&gt;</span> <span class="d">lowest forex fee?</span>\n\nCard A, 0%. Nothing else comes close.\n\n<span class="k">###</span> #21 | pointsnerd | page 2\nCheck the annual fee waiver first.'
+    },
+    ai: {
+      before: '<div class="bubble me">Find the three cheapest flights to Tokyo in May.</div><div class="step">▸ Searched the web · 4 results</div><div class="step">▸ Ran a script · compare_fares.py</div><div class="bubble">The cheapest is S$612 on 14 May, then…</div>',
+      label: 'chat.md · full',
+      md: '<span class="k">##</span> You\nFind the three cheapest flights to Tokyo in May.\n\n<span class="k">[Step 1: tool web_search]</span>\nquery: "flights to Tokyo May fares"\n\n<span class="k">[Step 2: tool code]</span>\n<span class="d">fares.sort(key=lambda f: f.price)</span>\n\n<span class="k">##</span> Assistant\nThe cheapest is S$612 on 14 May, then…'
+    },
+    cc: {
+      before: '<div class="video"><div class="play">▶</div><div class="cc">so the first thing to notice is</div></div><p style="margin-top:12px;color:var(--muted);font-size:14px">00:01:12 → 00:01:15 · so the first thing<br>00:01:15 → 00:01:17 · to notice is that the curve</p>',
+      label: 'captions.md',
+      md: '<span class="k">#</span> Lecture 3: Supply and demand\n<span class="d">Captions: English (auto-generated)</span>\n\nSo the first thing to notice is that the curve\nslopes down. When the price goes up, people\nbuy less of it.\n\nNow let\'s look at what happens when supply\nshifts to the right.'
+    }
+  };
+  var before = document.getElementById('before'), after = document.getElementById('after');
+  var timer;
+  function tokens(html) { return html.match(/<[^>]+>|&[a-z]+;|[^<&]/g) || []; }
+  function show(k) {
+    var d = D[k];
+    before.innerHTML = '<span class="label">Before</span>' + d.before;
+    clearInterval(timer);
+    var head = '<span class="label">' + d.label + '</span>';
+    if (reduce) { after.innerHTML = head + d.md; return; }
+    var t = tokens(d.md), i = 0, out = '';
+    after.innerHTML = head + '<span class="caret"></span>';
+    timer = setInterval(function () {
+      for (var n = 0; n < 3 && i < t.length; n++) { out += t[i++]; while (i < t.length && t[i][0] === '<') out += t[i++]; }
+      after.innerHTML = head + out + '<span class="caret"></span>';
+      if (i >= t.length) { clearInterval(timer); setTimeout(function () { var c = after.querySelector('.caret'); if (c) c.remove(); }, 1600); }
+    }, 16);
+  }
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function (b, idx) {
+    b.addEventListener('click', function () { tabs.forEach(function (x) { x.setAttribute('aria-selected', x === b); }); show(b.dataset.k); });
+    b.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!d) return;
+      var n = tabs[(idx + d + tabs.length) % tabs.length]; n.focus(); n.click();
+    });
+  });
+  show('page');
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{
+  "manifest_version": 3,
+  "name": "Page to Markdown",
+  "short_name": "Page to MD",
+  "version": "1.5.0",
+  "description": "Turn any page, multi-page forum thread or AI chat (Claude, ChatGPT, Gemini, Grok) into clean Markdown. Runs locally.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Page to Markdown",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+K"
+      },
+      "description": "Open Page to Markdown"
+    },
+    "convert-page": {
+      "suggested_key": {
+        "default": "Alt+Shift+M"
+      },
+      "description": "Convert this page to Markdown"
+    },
+    "export-ai-chat": {
+      "suggested_key": {
+        "default": "Alt+Shift+E"
+      },
+      "description": "Export the open AI chat (uses your saved export settings)"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs",
+    "downloads",
+    "contextMenus",
+    "storage",
+    "pageCapture",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "homepage_url": "https://github.com/cobuild-labs/page-to-markdown"
+}

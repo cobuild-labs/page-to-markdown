@@ -1,0 +1,55 @@
+name: 🐞 Bug report
+description: Something doesn't work the way it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+        **Please don't paste private AI chats, pages behind your login, or personal data.** Describe what went wrong instead.
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Which part?
+      options:
+        - Convert this page
+        - Multi-page thread or list
+        - AI chat export
+        - Captions to Markdown
+        - Cleaned-up version
+        - Settings, shortcuts or menus
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+      placeholder: I clicked "Convert this page" and the table came out as one long line...
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Public URL where it happens (if any)
+      placeholder: https://...
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open ...
+        2. Click ...
+  - type: input
+    id: version
+    attributes:
+      label: Extension version
+      description: Shown at the bottom right of the popup.
+      placeholder: v1.5.0
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: Chrome 141 on macOS

@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Page to Markdown</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  body { width: 320px; font-size: 13px; line-height: 1.4; }
+  header {
+    position: relative;
+    padding: 12px 44px 9px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  header h1 { font-size: 14px; margin: 0; letter-spacing: -0.005em; }
+  header p { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+  .gear {
+    position: absolute; top: 9px; right: 9px;
+    width: 30px; height: 30px; padding: 0; border: none; border-radius: 8px;
+    background: transparent; color: var(--muted);
+    display: grid; place-items: center;
+  }
+  .gear:hover { background: var(--bg-soft); color: var(--text); }
+  main { padding: 12px 14px 10px; }
+
+  .big {
+    display: block; width: 100%;
+    padding: 9px 11px; margin-bottom: 8px;
+    border: 1px solid var(--line); border-radius: 9px;
+    background: var(--bg-soft); color: var(--text);
+    text-align: left; font-size: 13px; font-weight: 500;
+    transition: background .15s, border-color .15s, transform .12s cubic-bezier(.2,.8,.2,1);
+  }
+  .big:hover { background: var(--line); }
+  .big:active { transform: scale(.985); }
+  .big:disabled { opacity: .6; cursor: default; transform: none; }
+  .big .sub { display: block; font-weight: 400; font-size: 11.5px; margin-top: 2px; color: var(--muted); }
+  .big.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); font-weight: 600; }
+  .big.primary:hover { background: var(--accent-hover); }
+  .big.primary .sub { color: rgba(255,255,255,.85); }
+
+  #aiSection {
+    border: 1px solid var(--accent-line); background: var(--accent-soft);
+    border-radius: 11px; padding: 10px 11px 3px; margin-bottom: 12px;
+  }
+  #aiSection h2 { font-size: 13px; margin: 0 0 6px; }
+  #aiSection h2 span { font-weight: 400; color: var(--muted); }
+  .opt { display: flex; gap: 8px; align-items: flex-start; margin: 5px 0; font-size: 12.5px; cursor: pointer; }
+  .opt input { margin: 2px 0 0; flex: none; }
+  .opt small { display: block; color: var(--muted); font-size: 11px; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 7px 0 9px; font-size: 12.5px; }
+  .row select { font-size: 12px; padding: 3px 5px; }
+
+  .prefs { margin: 2px 0 2px; padding: 2px 1px 0; }
+
+  .cap-pick { margin: -2px 0 10px; padding: 9px 10px 10px; border: 1px solid var(--line); border-radius: 10px; }
+  .cap-pick h3 { margin: 0 0 6px; font-size: 12.5px; }
+  .cap-opt { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 8px; margin-bottom: 4px; border: none; border-radius: 8px;
+    background: transparent; color: var(--text); font: inherit; font-size: 12.5px; text-align: left; cursor: pointer; box-shadow: inset 0 0 0 1px var(--line); }
+  .cap-opt.on { box-shadow: inset 0 0 0 2px var(--accent); background: var(--accent-soft); }
+  .cap-opt small { color: var(--muted); margin-left: auto; font-size: 11px; white-space: nowrap; }
+  .cap-select { width: 100%; padding: 6px 7px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; font-size: 12.5px; }
+  .cap-acts { display: flex; gap: 6px; margin-top: 6px; }
+  .cap-acts button { flex: 1; padding: 7px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg-soft); color: var(--text); font: inherit; font-size: 12.5px; cursor: pointer; }
+  .cap-acts .go { background: var(--accent); border-color: var(--accent); color: var(--accent-text); font-weight: 600; }
+
+  #status { font-size: 12px; color: var(--muted); white-space: pre-wrap; margin-top: 6px; }
+  #status:empty { display: none; }
+  #status.error { color: var(--bad); }
+  #status.ok { color: var(--good); }
+
+  .thanks {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 9px; padding: 9px 11px;
+    background: var(--warm-soft); border: 1px solid var(--warm-line); border-radius: 10px;
+    font-size: 12px;
+    animation: rise .32s cubic-bezier(.2,.8,.2,1);
+  }
+  .thanks span { flex: 1; }
+  .coffee {
+    border: none; border-radius: 8px; padding: 6px 10px;
+    background: var(--warm); color: #1b1300; font-weight: 600; font-size: 12px; white-space: nowrap;
+    transition: transform .12s cubic-bezier(.2,.8,.2,1), filter .15s;
+  }
+  .coffee:hover { filter: brightness(1.05); }
+  .coffee:active { transform: scale(.96); }
+
+  #prompt {
+    background: var(--warm-soft); border: 1px solid var(--warm-line);
+    border-radius: 11px; padding: 10px 11px; margin-bottom: 12px; font-size: 12.5px;
+  }
+  #prompt p { margin: 0 0 8px; }
+  #prompt .acts { display: flex; flex-wrap: wrap; gap: 6px; }
+  #prompt .acts button { border-radius: 8px; padding: 5px 9px; font-size: 12px; border: 1px solid var(--line); background: var(--card); }
+  #prompt .acts .coffee { border: none; background: var(--warm); }
+  #prompt .acts .plain { border-color: transparent; background: transparent; color: var(--muted); }
+
+  footer {
+    display: flex; align-items: center; gap: 2px;
+    padding: 7px 8px 9px; border-top: 1px solid var(--line);
+    font-size: 11.5px;
+  }
+  footer button { border: none; background: transparent; color: var(--muted); padding: 4px 4px; border-radius: 6px; font-size: 11.5px; white-space: nowrap; }
+  footer button:hover { background: var(--bg-soft); color: var(--text); }
+  footer .support { color: #c2410c; font-weight: 600; }
+  @media (prefers-color-scheme: dark) { footer .support { color: var(--warm); } }
+  footer .version { margin-left: auto; color: var(--faint); padding-right: 4px; }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .sheet { padding: 14px 14px 14px; animation: sheetIn .22s cubic-bezier(.2,.8,.2,1); }
+  @keyframes sheetIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .sheet { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .thanks { animation: none; } .big, .coffee { transition: none; } }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Page to Markdown</h1>
+    <p>Turn this page, a whole thread or an AI chat into one Markdown file.</p>
+    <button class="gear" id="openOptions" title="Settings" aria-label="Settings">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <div id="prompt" class="hidden">
+      <p id="promptText">Enjoying Page to Markdown?</p>
+      <div class="acts">
+        <button class="coffee" id="promptSupport">&#9749; Buy me a coffee</button>
+        <button id="promptStar">&#9733; Star on GitHub</button>
+        <button class="plain" id="promptLater">Maybe later</button>
+        <button class="plain" id="promptNever">Don't ask again</button>
+      </div>
+    </div>
+
+    <section id="aiSection" class="hidden">
+      <h2>Export AI chat <span id="aiSite"></span></h2>
+      <label class="opt"><input type="radio" name="aiMode" value="full">
+        <span>Chat + everything behind it<small>Thinking, every tool or script it ran with exact inputs, and what came back</small></span></label>
+      <label class="opt"><input type="radio" name="aiMode" value="chat">
+        <span>Chat only<small>Just your messages and the replies</small></span></label>
+      <label class="opt"><input type="checkbox" id="aiSources"><span>Include sources and links used</span></label>
+      <label class="opt"><input type="checkbox" id="aiRaw"><span>Also save the raw page (.mhtml backup)</span></label>
+      <div class="row"><span>Long tool outputs</span>
+        <select id="aiTrim">
+          <option value="0">Keep in full</option>
+          <option value="20000">Trim to 20,000 chars</option>
+          <option value="4000">Trim to 4,000 chars</option>
+        </select></div>
+      <button id="aiExport" class="big primary">Export this chat
+        <span class="sub" id="aiExportSub">Saves a .md file to Downloads</span></button>
+    </section>
+
+    <button id="convertCurrent" class="big">Convert this page
+      <span class="sub" id="convertSub">Saves a .md file of the current tab</span></button>
+    <button id="convertSelection" class="big hidden">Convert only the selected text
+      <span class="sub" id="selectionInfo"></span></button>
+    <button id="openRunner" class="big">Convert a multi-page thread or list...
+      <span class="sub">Follows page links or "Next" buttons, combines every page into one file</span></button>
+    <button id="captions" class="big">Captions to Markdown
+      <span class="sub" id="captionsSub">Saves a video's captions as plain text, no timestamps</span></button>
+    <div id="capPick" class="cap-pick hidden" role="radiogroup" aria-label="Choose captions"></div>
+
+    <div class="prefs">
+      <label class="opt"><input type="checkbox" id="cleanMode">
+        <span>Cleaned-up version <span class="beta" title="Works on most sites, but may drop or keep the odd bit. Untick it if something is missing.">Beta</span><small>Leaves out ads, menus, sidebars, cookie and newsletter boxes</small></span></label>
+      <label class="opt"><input type="checkbox" id="copyInstead">
+        <span>Copy to clipboard instead of saving a file</span></label>
+    </div>
+
+    <div id="status" role="status" aria-live="polite"></div>
+    <div id="thanks" class="thanks hidden">
+      <span>Done.</span>
+      <button class="coffee" id="thanksSupport">&#9749; Buy me a coffee</button>
+    </div>
+  </main>
+
+  <div id="supportSheet" class="sp sheet hidden"></div>
+
+  <footer>
+    <button class="support" id="support">&#9749; Buy me a coffee</button>
+    <button id="footerOptions">Settings</button>
+    <button class="hidden" id="report">Report a problem</button>
+    <span class="version" id="version"></span>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="common.js"></script>
+  <script src="extract.js"></script>
+  <script src="support.js"></script>
+  <script src="captions.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

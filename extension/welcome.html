@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Welcome to Page to Markdown</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  body { background: var(--bg-soft); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 22px 70px; }
+  .hero { text-align: center; margin-bottom: 34px; }
+  .hero img { width: 72px; height: 72px; border-radius: 16px; box-shadow: 0 8px 28px rgba(37, 99, 235, .25); }
+  .hero h1 { font-size: 30px; margin: 18px 0 6px; letter-spacing: -.01em; }
+  .hero p { font-size: 15.5px; color: var(--muted); margin: 0 auto; max-width: 560px; }
+  .pin { display: flex; gap: 14px; align-items: center; background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: 14px; padding: 14px 18px; margin-bottom: 26px; }
+  .pin .num { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 700; flex: none; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 26px; }
+  @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .tile .ico { font-size: 22px; }
+  .tile h3 { font-size: 15px; margin: 8px 0 5px; }
+  .tile p { margin: 0; color: var(--muted); font-size: 13px; }
+  h2 { font-size: 17px; margin: 30px 0 12px; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  td { padding: 10px 16px; border-top: 1px solid var(--line); font-size: 13.5px; }
+  tr:first-child td { border-top: none; }
+  td:last-child { text-align: right; white-space: nowrap; }
+  .privacy { display: flex; gap: 12px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .privacy p { margin: 0; color: var(--muted); }
+  .support { text-align: center; background: var(--warm-soft); border: 1px solid var(--warm-line); border-radius: 16px; padding: 24px; margin-top: 30px; }
+  .support h2 { margin: 0 0 6px; }
+  .support p { margin: 0 auto 14px; max-width: 520px; color: var(--muted); }
+  .support .btn { padding: 10px 18px; font-size: 14px; }
+  .done { text-align: center; margin-top: 26px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img src="icons/icon128.png" alt="">
+    <h1>Page to Markdown is ready</h1>
+    <p>Turn any web page, a whole multi-page forum thread, or an AI chat into one clean Markdown file. Everything happens in your browser.</p>
+  </div>
+
+  <div class="pin">
+    <div class="num">1</div>
+    <div><b>Pin it to your toolbar.</b> <span class="muted">Click the puzzle-piece icon at the top right of Chrome, then the pin next to Page to Markdown.</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="tile"><div class="ico">&#128196;</div><h3>Any page</h3><p>Click the icon and choose Convert or Copy. Highlight text first to convert just that part.</p></div>
+    <div class="tile"><div class="ico">&#128218;</div><h3>Whole threads</h3><p>"Convert a multi-page thread" finds every page and combines them. Forum posts get their author, date and quotes.</p></div>
+    <div class="tile"><div class="ico">&#129302;</div><h3>AI chats</h3><p>On Claude, ChatGPT, Gemini or Grok, export the chat with the thinking, every tool it ran and the sources, ready to hand to another AI.</p></div>
+    <div class="tile"><div class="ico">&#9881;&#65039;</div><h3>Your way</h3><p>File name patterns, Obsidian-style front matter, copy instead of download, dark mode. All in Settings.</p></div>
+  </div>
+
+  <h2>Keyboard shortcuts</h2>
+  <table>
+    <tr><td>Open Page to Markdown</td><td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd></td></tr>
+    <tr><td>Convert this page</td><td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td></tr>
+    <tr><td>Export the open AI chat</td><td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd></td></tr>
+    <tr><td>Right-click any page or selection</td><td class="muted">Convert page / Convert selection</td></tr>
+  </table>
+  <p class="muted" style="font-size:12.5px">Change them any time at <a href="#" id="shortcutsLink">chrome://extensions/shortcuts</a>.</p>
+
+  <h2>Your privacy</h2>
+  <div class="privacy">
+    <div style="font-size:20px">&#128274;</div>
+    <p>No account, no tracking, no analytics, no servers. Pages and chats are read inside your own browser tab and saved straight to your computer. The only thing stored is your settings.</p>
+  </div>
+
+  <div class="support hidden" id="support">
+    <h2>Like it?</h2>
+    <button class="btn warm" id="supportBtn">&#9829; <span id="supportLabel">Support</span></button>
+    <button class="btn hidden" id="starBtn">&#9733; Star on GitHub</button>
+  </div>
+
+  <div class="done">
+    <button class="btn primary" id="settingsBtn">Open settings</button>
+    <button class="btn ghost" id="closeBtn">I'm all set</button>
+  </div>
+</div>
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script src="welcome.js"></script>
+</body>
+</html>

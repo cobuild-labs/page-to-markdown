@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Page to Markdown settings</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  body { background: var(--bg-soft); }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
+  .top { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .top img { width: 40px; height: 40px; border-radius: 9px; }
+  .top h1 { font-size: 21px; margin: 0; }
+  .top p { margin: 2px 0 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 6px 18px; margin-bottom: 16px; }
+  .card h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 4px; }
+  .set { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .card h2 + .set { border-top: none; }
+  .set .label { flex: 1; }
+  .set .label b { display: block; font-weight: 600; font-size: 13.5px; }
+  .set .label small { color: var(--muted); font-size: 12px; }
+  .set select, .set input[type=text] { min-width: 210px; }
+  .switch { position: relative; width: 38px; height: 22px; flex: none; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch span { position: absolute; inset: 0; background: var(--line); border-radius: 22px; transition: .15s; cursor: pointer; }
+  .switch span::before { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .15s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .switch input:checked + span { background: var(--accent); }
+  .switch input:checked + span::before { transform: translateX(16px); }
+  .tokens { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .tokens code { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+  .saved { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(20px); opacity: 0; background: var(--text); color: var(--bg); padding: 7px 14px; border-radius: 20px; font-size: 12.5px; transition: .2s; pointer-events: none; }
+  .saved.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .support-card { display: flex; align-items: center; gap: 14px; background: var(--warm-soft); border: 1px solid var(--warm-line); border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; }
+  .support-card p { margin: 0; flex: 1; }
+  .links { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <img src="icons/icon128.png" alt="">
+    <div>
+      <h1>Page to Markdown</h1>
+      <p class="muted">Settings are saved as you change them. <span id="version"></span></p>
+    </div>
+  </div>
+
+  <div class="support-card hidden" id="supportCard">
+    <p><b>Like it?</b></p>
+    <button class="btn warm" id="supportBtn">&#9829; <span id="supportLabel">Support</span></button>
+  </div>
+
+  <div class="card" id="support">
+    <h2>Support button</h2>
+    <div class="set"><div class="label"><b>Your support link</b><small>Your Buy Me a Coffee, Ko-fi or GitHub Sponsors page. The coffee buttons in the popup open it.</small></div>
+      <input type="text" data-key="supportUrl" placeholder="https://buymeacoffee.com/yourname"></div>
+  </div>
+
+  <div class="card">
+    <h2>AI chat export</h2>
+    <div class="set"><div class="label"><b>Default export type</b><small>What the popup picks first. It remembers your last choice.</small></div>
+      <select data-key="aiMode"><option value="full">Chat + everything behind it</option><option value="chat">Chat only</option></select></div>
+    <div class="set"><div class="label"><b>Include sources and links</b><small>A list per reply and one combined list at the end.</small></div>
+      <label class="switch"><input type="checkbox" data-key="aiSources"><span></span></label></div>
+    <div class="set"><div class="label"><b>Long tool outputs</b><small>Chats that read many web pages can make very large files.</small></div>
+      <select data-key="aiTrim" data-type="number"><option value="0">Keep in full</option><option value="20000">Trim to 20,000 characters</option><option value="4000">Trim to 4,000 characters</option></select></div>
+    <div class="set"><div class="label"><b>Also save the raw page</b><small>An .mhtml copy of the page as shown, as a backup.</small></div>
+      <label class="switch"><input type="checkbox" data-key="aiRaw"><span></span></label></div>
+  </div>
+
+  <div class="card">
+    <h2>Output</h2>
+    <div class="set"><div class="label"><b>File name</b>
+        <div class="tokens">Use <code>{title}</code> <code>{site}</code> <code>{date}</code> <code>{mode}</code></div></div>
+      <input type="text" data-key="filenameTemplate" placeholder="{title}"></div>
+    <div class="set"><div class="label"><b>Add front matter</b><small>A YAML block at the top (title, source, date, tags). Handy for Obsidian, Logseq and static sites.</small></div>
+      <label class="switch"><input type="checkbox" data-key="frontMatter"><span></span></label></div>
+    <div class="set"><div class="label"><b>Title and source line on page exports</b><small>Starts the file with the page title and its link.</small></div>
+      <label class="switch"><input type="checkbox" data-key="sourceHeader"><span></span></label></div>
+    <div class="set"><div class="label"><b>Ask where to save each file</b><small>Off saves straight to your Downloads folder.</small></div>
+      <label class="switch"><input type="checkbox" data-key="saveAs"><span></span></label></div>
+  </div>
+
+  <div class="card">
+    <h2>Pages</h2>
+    <div class="set"><div class="label"><b>Cleaned-up version <span class="beta">Beta</span></b><small>Leave out ads, menus, sidebars, cookie banners, share and newsletter boxes. Also a checkbox in the popup.</small></div>
+      <label class="switch"><input type="checkbox" data-key="cleanMode"><span></span></label></div>
+    <div class="set"><div class="label"><b>Copy instead of saving a file</b><small>Exports go to your clipboard, ready to paste into Claude or your notes.</small></div>
+      <label class="switch"><input type="checkbox" data-key="copyInstead"><span></span></label></div>
+    <div class="set"><div class="label"><b>Split forum threads into posts</b><small>Recognises XenForo, Discourse, phpBB and vBulletin forums.</small></div>
+      <label class="switch"><input type="checkbox" data-key="usePresets"><span></span></label></div>
+  </div>
+
+  <div class="card">
+    <h2>Shortcuts and help</h2>
+    <div class="set"><div class="label"><b>Keyboard shortcuts</b><small>Defaults: <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> convert page, <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>E</kbd> export AI chat, <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> open the popup.</small></div>
+      <button class="btn" id="shortcuts">Change shortcuts</button></div>
+    <div class="links">
+      <button class="btn" id="welcome">Show the welcome guide</button>
+      <button class="btn hidden" id="repo">Source code on GitHub</button>
+      <button class="btn hidden" id="issues">Report a problem</button>
+      <button class="btn ghost" id="reset">Reset all settings</button>
+    </div>
+  </div>
+
+  <p class="muted" style="font-size:12px;text-align:center">Everything runs in your browser. Page to Markdown collects no data and sends nothing anywhere.</p>
+</div>
+<div class="saved" id="saved">Saved</div>
+
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

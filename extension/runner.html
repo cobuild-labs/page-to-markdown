@@ -1,0 +1,341 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Page to Markdown - Multiple pages</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  :root {
+    
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font: 14px/1.5 -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg-soft);
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+  .source {
+    color: var(--muted);
+    font-size: 12.5px;
+    word-break: break-all;
+    margin-bottom: 20px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+  label.radio {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    cursor: pointer;
+  }
+  label.radio input { margin-top: 3px; }
+  .radio-body { flex: 1; }
+  .radio-title { font-weight: 600; font-size: 13.5px; }
+  .radio-desc { color: var(--muted); font-size: 12px; margin-top: 1px; }
+  .fields {
+    margin: 8px 0 4px 26px;
+    display: none;
+  }
+  .fields.active { display: block; }
+  .field-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .field-row label {
+    width: 110px;
+    flex-shrink: 0;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  input[type=text], input[type=number] {
+    flex: 1;
+    padding: 7px 9px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    font-size: 13px;
+  }
+  input[type=number] { max-width: 90px; }
+  .pick-btn {
+    padding: 6px 10px;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    background: var(--bg-soft);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .pick-btn:hover { background: var(--line); }
+  details summary {
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    padding: 4px 0;
+  }
+  .hint {
+    color: var(--faint);
+    font-size: 11.5px;
+    margin: 4px 0 0 26px;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  button.primary {
+    background: var(--accent);
+    color: var(--accent-text);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.primary:disabled { background: var(--accent); opacity: .5; cursor: default; }
+  button.secondary {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13.5px;
+    cursor: pointer;
+  }
+  button.secondary:disabled { color: var(--faint); cursor: default; }
+  progress {
+    width: 100%;
+    height: 8px;
+    margin: 12px 0 6px;
+    accent-color: var(--accent);
+  }
+  #progressLabel {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  #log {
+    margin-top: 8px;
+    max-height: 160px;
+    overflow-y: auto;
+    font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    color: var(--muted);
+  }
+  #log .err { color: var(--bad); }
+  #log:empty { display: none; }
+  #preview {
+    width: 100%;
+    height: 320px;
+    font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    resize: vertical;
+  }
+  #stats {
+    color: var(--faint);
+    font-size: 12px;
+    margin-top: 6px;
+  }
+
+  input[type=text], input[type=number], textarea { background: var(--field); color: var(--text); }
+  button.secondary { color: var(--text); }
+  .pick-btn { color: var(--text); }
+
+  .found { flex: 1; font-size: 13px; color: var(--text); }
+  details summary { margin-top: 6px; }
+  .thanks { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 10px 12px;
+    background: var(--warm-soft); border: 1px solid var(--warm-line); border-radius: 10px; font-size: 13px;
+    animation: rise .32s cubic-bezier(.2,.8,.2,1); }
+  .thanks span { flex: 1; }
+  .coffee { border: none; border-radius: 8px; padding: 7px 12px; background: var(--warm); color: #1b1300; font-weight: 600; cursor: pointer; }
+  .coffee:active { transform: scale(.96); }
+  button.primary, button.secondary, .pick-btn { transition: transform .12s cubic-bezier(.2,.8,.2,1), background .15s; }
+  button.primary:active:not(:disabled), button.secondary:active:not(:disabled), .pick-btn:active:not(:disabled) { transform: scale(.97); }
+  @keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .thanks { animation: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Convert a multi-page thread or list</h1>
+  <div class="source">Source tab: <span id="sourceUrl">-</span></div>
+
+  <div class="card">
+    <h2>1. How do you get to the next page?</h2>
+
+    <label class="radio">
+      <input type="radio" name="mode" value="auto" checked>
+      <div class="radio-body">
+        <div class="radio-title">Work it out for me</div>
+        <div class="radio-desc">Looks for numbered page links (1 2 3 ... N), a "Next" link, or a "Next page" / "Load more" button.</div>
+      </div>
+    </label>
+    <div class="fields" id="fields-auto">
+      <div class="field-row">
+        <span id="detectResult" class="found">Looking at the page...</span>
+        <button type="button" class="pick-btn" id="detectBtn">Check again</button>
+      </div>
+    </div>
+
+    <label class="radio">
+      <input type="radio" name="mode" value="button">
+      <div class="radio-body">
+        <div class="radio-title">Click the page's "Next" button</div>
+        <div class="radio-desc">For sites where "Next page" or "Load more" is a button and the address does not change.</div>
+      </div>
+    </label>
+    <div class="fields" id="fields-button">
+      <div class="field-row">
+        <label>Stop after</label>
+        <input type="number" id="buttonMax" value="50" min="1">
+        <span class="hint" style="margin:0">pages at most</span>
+      </div>
+    </div>
+
+    <label class="radio">
+      <input type="radio" name="mode" value="next">
+      <div class="radio-body">
+        <div class="radio-title">Follow "Next" links</div>
+        <div class="radio-desc">Starts here and keeps following the next-page link until there is none.</div>
+      </div>
+    </label>
+    <div class="fields" id="fields-next">
+      <div class="field-row">
+        <label>Stop after</label>
+        <input type="number" id="nextMax" value="50" min="1">
+        <span class="hint" style="margin:0">pages at most</span>
+      </div>
+    </div>
+
+    <label class="radio">
+      <input type="radio" name="mode" value="manual">
+      <div class="radio-body">
+        <div class="radio-title">Page address pattern</div>
+        <div class="radio-desc">Give the address with <code>{page}</code> where the page number goes.</div>
+      </div>
+    </label>
+    <div class="fields" id="fields-manual">
+      <div class="field-row">
+        <label>Pattern</label>
+        <input type="text" id="manualPattern" placeholder="https://example.com/list?page={page}">
+      </div>
+      <div class="field-row">
+        <label>From page</label>
+        <input type="number" id="manualStart" value="1" min="1">
+        <label style="width:60px;text-align:right">to</label>
+        <input type="number" id="manualEnd" value="2" min="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. What to keep</h2>
+    <label class="radio" style="padding-top:0">
+      <input type="checkbox" id="cleanMode" checked>
+      <div class="radio-body">
+        <div class="radio-title">Cleaned-up version <span class="beta">Beta</span></div>
+        <div class="radio-desc">Leaves out ads, menus, sidebars, cookie banners, share and newsletter boxes.</div>
+      </div>
+    </label>
+    <label class="radio">
+      <input type="checkbox" id="skipRepeats" checked>
+      <div class="radio-body">
+        <div class="radio-title">Skip text repeated on every page</div>
+        <div class="radio-desc">Page titles and intros that every page shows again are kept only once.</div>
+      </div>
+    </label>
+    <label class="radio">
+      <input type="checkbox" id="usePresets" checked>
+      <div class="radio-body">
+        <div class="radio-title">Split forum threads into posts</div>
+        <div class="radio-desc">XenForo, Discourse, phpBB and vBulletin: each post gets its number, author and date; quotes stay as quotes.</div>
+      </div>
+    </label>
+    <details id="advanced">
+      <summary>Choose parts of the page yourself</summary>
+      <p class="hint" style="margin:8px 0 12px">Optional. Click a "Pick" button, then click on the page. Your picks are remembered for this site.</p>
+      <div class="field-row">
+        <label>One item of a list</label>
+        <input type="text" id="itemSelector" placeholder="a post, a comment, a card">
+        <button type="button" class="pick-btn" data-pick="itemSelector" data-mode="repeat" data-label="list item">Pick</button>
+      </div>
+      <div class="hint" style="margin:0 0 12px 118px">Every similar item on each page is exported, one after another.</div>
+      <div class="field-row">
+        <label>Item title</label>
+        <input type="text" id="itemHeadingSelector" placeholder="optional, e.g. the author or name">
+        <button type="button" class="pick-btn" data-pick="itemHeadingSelector" data-mode="inner" data-label="item title">Pick</button>
+      </div>
+      <div class="field-row">
+        <label>Item date</label>
+        <input type="text" id="itemDateSelector" placeholder="optional">
+        <button type="button" class="pick-btn" data-pick="itemDateSelector" data-mode="inner" data-label="item date">Pick</button>
+      </div>
+      <div class="field-row" style="margin-top:12px">
+        <label>Only this area</label>
+        <input type="text" id="contentSelector" placeholder="e.g. the main column">
+        <button type="button" class="pick-btn" data-pick="contentSelector" data-mode="single" data-label="area">Pick</button>
+      </div>
+      <div class="field-row">
+        <label>Leave out</label>
+        <input type="text" id="excludeSelector" placeholder="things to skip, comma-separated">
+        <button type="button" class="pick-btn" data-pick="excludeSelector" data-mode="append" data-label="leave out">Pick</button>
+      </div>
+      <div class="field-row"><label></label><button type="button" class="pick-btn" id="clearSelectors">Clear my picks</button></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2>3. Run it</h2>
+    <div class="actions">
+      <button class="primary" id="startBtn">Start</button>
+      <button class="secondary" id="stopBtn" disabled>Stop</button>
+      <button class="secondary" id="saveBtn" disabled>Save .md file</button>
+      <button class="secondary" id="copyBtn" disabled>Copy</button>
+    </div>
+    <progress id="progressBar" value="0" max="1"></progress>
+    <div id="progressLabel">Ready.</div>
+    <div id="log"></div>
+    <div id="thanks" class="thanks hidden">
+      <span>All done.</span>
+      <button class="coffee" id="thanksSupport">&#9749; Buy me a coffee</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Preview</h2>
+    <textarea id="preview" readonly placeholder="The Markdown appears here page by page..."></textarea>
+    <div id="stats"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script src="extract.js"></script>
+<script src="runner.js"></script>
+</body>
+</html>
