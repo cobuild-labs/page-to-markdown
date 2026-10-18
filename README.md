@@ -184,9 +184,6 @@ Yes, and open source under the MIT license. If it saves you time, you can <a hre
 ## Roadmap
 
 - [ ] Chrome Web Store listing
-- [ ] Captions: read caption files a page has already loaded, for players that hide their tracks
-- [ ] Captions: live capture (record, stop, save) for players with no caption file
-- [ ] Player adapters for JW Player, Wistia and Zoom recordings
 - [ ] Firefox build
 
 Have an idea? [Suggest a feature](https://github.com/cobuild-labs/page-to-markdown/issues/new/choose).
