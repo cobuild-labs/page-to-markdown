@@ -7,7 +7,7 @@
   <img alt="Manifest V3" src="https://img.shields.io/badge/Chrome-Manifest%20V3-0F1730?style=flat-square&logo=googlechrome&logoColor=white">
   <img alt="No tracking" src="https://img.shields.io/badge/tracking-none-1F6B3A?style=flat-square">
   <img alt="Dependencies" src="https://img.shields.io/badge/dependencies-0-1F6B3A?style=flat-square">
-  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-55607A?style=flat-square"></a>
+  <a href="LICENSE"><img alt="GPL-3.0 license" src="https://img.shields.io/badge/license-GPL--3.0-55607A?style=flat-square"></a>
 </p>
 
 <p align="center">
@@ -178,7 +178,7 @@ Not yet. It's built on Chrome's Manifest V3 and works in any Chromium browser.
 <details>
 <summary><b>Is it free?</b></summary>
 
-Yes, and open source under the MIT license. If it saves you time, you can <a href="https://buy.stripe.com/28EbJ2bJNeLS1FrfZ100002">buy me a coffee</a> ☕.
+Yes, and open source under the GPL-3.0 license. If it saves you time, you can <a href="https://buy.stripe.com/28EbJ2bJNeLS1FrfZ100002">buy me a coffee</a> ☕.
 </details>
 
 ## Roadmap
@@ -214,7 +214,9 @@ Or simply **star the repo** ⭐. It genuinely helps other people find it.
 
 ## License
 
-[MIT](LICENSE) © 2026 CoBuild
+Page to Markdown is free software, © 2026 CoBuild, released under the [GNU General Public License v3.0](LICENSE).
+
+In short: you can use it, change it and share it, including your own modified versions. If you share a modified version, it must also be open source under GPL-3.0, with its source code available, and keep this copyright notice.
 
 <br>
 

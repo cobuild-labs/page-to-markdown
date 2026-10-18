@@ -16,6 +16,7 @@ All notable changes to Page to Markdown. Dates are release dates.
 
 ### Changed
 - Popup footer stays on one line.
+- License changed from MIT to the GNU General Public License v3.0.
 
 ## 1.4.2
 

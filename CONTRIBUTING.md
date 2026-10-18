@@ -51,4 +51,4 @@ Please keep pull requests focused, and describe how you tested the change (which
 - Interface copy is short, plain and in sentence case. Buttons say what they do ("Save .md file", not "Submit").
 - Respect `prefers-color-scheme` and `prefers-reduced-motion`.
 
-By contributing you agree that your contributions are licensed under the [MIT license](LICENSE).
+By contributing you agree that your contributions are licensed under the [GNU General Public License v3.0](LICENSE).
