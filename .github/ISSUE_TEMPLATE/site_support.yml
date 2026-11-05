@@ -1,0 +1,38 @@
+name: 🌐 A site doesn't convert well
+description: A page, forum, list or video player that comes out messy, empty or incomplete.
+labels: [site-support]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Public URL
+      description: Only public pages, please. Nothing behind a login.
+      placeholder: https://...
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: What were you doing?
+      options:
+        - Convert this page
+        - Multi-page thread or list
+        - Captions to Markdown
+        - AI chat export
+    validations:
+      required: true
+  - type: checkboxes
+    id: tried
+    attributes:
+      label: What did you try?
+      options:
+        - label: With "Cleaned-up version" on
+        - label: With "Cleaned-up version" off
+        - label: With "Choose parts of the page yourself"
+  - type: textarea
+    id: what
+    attributes:
+      label: What was wrong with the result?
+      placeholder: Only the first post came out / the list repeats / ads were kept...
+    validations:
+      required: true

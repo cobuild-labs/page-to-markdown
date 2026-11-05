@@ -1,0 +1,19 @@
+name: ✨ Feature idea
+description: Suggest something new or a change.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      placeholder: I export long chats and want to...
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+  - type: textarea
+    id: else
+    attributes:
+      label: Anything else?

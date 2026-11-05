@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Share feedback or ask a question
+    url: https://github.com/cobuild-labs/page-to-markdown/discussions
+    about: Tell us what you like, what's missing, or how you use it. Questions welcome too.
+  - name: ☕ Buy me a coffee
+    url: https://buy.stripe.com/28EbJ2bJNeLS1FrfZ100002
+    about: Enjoying Page to Markdown? Support its development.
