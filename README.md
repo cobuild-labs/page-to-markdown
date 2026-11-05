@@ -7,7 +7,6 @@
   <img alt="Manifest V3" src="https://img.shields.io/badge/Chrome-Manifest%20V3-0F1730?style=flat-square&logo=googlechrome&logoColor=white">
   <img alt="No tracking" src="https://img.shields.io/badge/tracking-none-1F6B3A?style=flat-square">
   <img alt="Dependencies" src="https://img.shields.io/badge/dependencies-0-1F6B3A?style=flat-square">
-  <a href="LICENSE"><img alt="GPL-3.0 license" src="https://img.shields.io/badge/license-GPL--3.0-55607A?style=flat-square"></a>
 </p>
 
 <p align="center">
@@ -16,14 +15,14 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/cobuild-labs/page-to-markdown/releases/latest"><b>Download</b></a> ·
+  <a href="https://thecobuild.pages.dev/download/page-to-markdown"><b>Download</b></a> ·
   <a href="#install-in-two-minutes">Install</a> ·
   <a href="#what-it-does">Features</a> ·
   <a href="#ai-chat-export">AI chat export</a> ·
   <a href="PRIVACY.md">Privacy</a> ·
   <a href="#feedback">Feedback</a> ·
   <a href="#support">Support ☕</a> ·
-  <a href="https://cobuild-labs.github.io/page-to-markdown/">Website</a>
+  <a href="https://thecobuild.pages.dev/page-to-markdown/">Website</a>
 </p>
 
 <br>
@@ -129,7 +128,7 @@ Code and config files (`.js`, `.py`, `.css`, `.json` and the like) are left out 
 
 The extension is not on the Chrome Web Store yet, so you add it yourself. It works in Chrome, Edge, Brave, Arc and other Chromium browsers, on Mac and Windows.
 
-1. **Download** `page-to-markdown-v1.9.0.zip` from the [latest release](https://github.com/cobuild-labs/page-to-markdown/releases/latest).
+1. **[Download the zip](https://thecobuild.pages.dev/download/page-to-markdown)** (`page-to-markdown-v1.9.0.zip`).
 2. **Unzip it.**
    - **Mac:** double-click the zip in Downloads.
    - **Windows:** right-click the zip, choose **Extract All…**, then **Extract**.
@@ -226,7 +225,7 @@ Not yet. It's built on Chrome's Manifest V3 and works in any Chromium browser.
 <details>
 <summary><b>Is it free?</b></summary>
 
-Yes, and open source under the GPL-3.0 license. If it saves you time, you can <a href="https://buy.stripe.com/28EbJ2bJNeLS1FrfZ100002">buy me a coffee</a> ☕.
+Yes, every feature is free. If it saves you time, you can <a href="https://buy.stripe.com/28EbJ2bJNeLS1FrfZ100002">buy me a coffee</a> ☕.
 </details>
 
 ## Roadmap
@@ -242,11 +241,10 @@ I'd love to hear how you use it, what works and what doesn't.
 
 - 💬 **[Share feedback or an idea](https://github.com/cobuild-labs/page-to-markdown/discussions)** in Discussions: what you like, what's missing, how you use it with your AI tools.
 - 🐞 **[Report a bug or a site that doesn't convert well](https://github.com/cobuild-labs/page-to-markdown/issues/new/choose)**.
-- ⭐ **Star the repo** if it's useful. It helps other people find it.
 
 ## Support
 
-Page to Markdown is free, open source and has no ads, and it stays that way. It's built and maintained independently, so if it saves you time, a coffee keeps the next feature coming:
+Page to Markdown is free and has no ads. It's built and maintained independently, so if it saves you time, a coffee keeps the next feature coming:
 
 <p>
   <a href="https://buy.stripe.com/dRmbJ2bJNfPWfwheUX00001"><img alt="Small coffee, S$3" src="https://img.shields.io/badge/☕_small_coffee-S$3-FFC21A?style=for-the-badge&labelColor=0F1730"></a>
@@ -254,13 +252,9 @@ Page to Markdown is free, open source and has no ads, and it stays that way. It'
   <a href="https://buy.stripe.com/3cI3cwg03fPWbg128b00004"><img alt="Your own amount" src="https://img.shields.io/badge/♥_your_own_amount-any-FFC21A?style=for-the-badge&labelColor=0F1730"></a>
 </p>
 
-Or simply **star the repo** ⭐. It genuinely helps other people find it.
-
 ## License
 
-Page to Markdown is free software, © 2026 CoBuild, released under the [GNU General Public License v3.0](LICENSE).
-
-In short: you can use it, change it and share it, including your own modified versions. If you share a modified version, it must also be open source under GPL-3.0, with its source code available, and keep this copyright notice.
+© 2026 CoBuild. All rights reserved. Page to Markdown is free to download and use, but its code may not be copied, changed or shared. See [LICENSE](LICENSE).
 
 <br>
 
