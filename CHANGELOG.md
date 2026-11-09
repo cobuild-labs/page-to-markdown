@@ -2,6 +2,22 @@
 
 All notable changes to Page to Markdown. Dates are release dates.
 
+## 1.12.0 · 2026-11-09
+
+Everything since 1.9.0 (versions 1.10 and 1.11 were never released separately).
+
+### Added
+- **Updates, made easy.** Once a day the extension checks whether a new version is out. When there is one, a small note at the top of the popup takes you to a page with what's new and step-by-step instructions for your browser and computer: download, unzip, swap in the new files, then click Finish update. Your settings stay. There's also a "Check for updates" button in Settings.
+- **Export a whole Claude project.** On a Claude project page, the AI box becomes "Export this project": one `.zip` with the project's files (folders kept), its instructions, a list of its chats and, if you like, every chat with the files it made.
+- **Captions from a whole playlist or course.** Pick the videos from a YouTube playlist or a course's lesson list and save all their captions in one go, as one `.md` or a `.zip` with a file per video. Choose the language; videos without it are listed, never mixed in.
+- **Include unfinished files** (Claude, off by default): files Claude wrote but never sent, for example when a chat stopped at a usage limit.
+
+### Fixed
+- On sites that switch lessons without reloading the page, the captions picker no longer lists caption files from videos you watched earlier.
+
+### Changed
+- The licence and privacy policy are now short and plain. The only thing the extension looks up is the latest version number.
+
 ## 1.9.0 · 2026-11-04
 
 Everything since 1.5.0 (versions 1.6 to 1.8 were never released separately).

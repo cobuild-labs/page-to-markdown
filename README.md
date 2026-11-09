@@ -128,19 +128,19 @@ Code and config files (`.js`, `.py`, `.css`, `.json` and the like) are left out 
 
 The extension is not on the Chrome Web Store yet, so you add it yourself. It works in Chrome, Edge, Brave, Arc and other Chromium browsers, on Mac and Windows.
 
-1. **[Download the zip](https://thecobuild.pages.dev/download/page-to-markdown)** (`page-to-markdown-v1.9.0.zip`).
+1. **[Download the zip](https://thecobuild.pages.dev/download/page-to-markdown)** (`page-to-markdown-v1.12.0.zip`).
 2. **Unzip it.**
    - **Mac:** double-click the zip in Downloads.
    - **Windows:** right-click the zip, choose **Extract All…**, then **Extract**.
 
-   You get a folder called `page-to-markdown-v1.9.0`. Move it somewhere it can stay, like Documents.
+   You get a folder called `page-to-markdown-v1.12.0`. Move it somewhere it can stay, like Documents.
 3. **Open your extensions page:** type `chrome://extensions` in the address bar (Edge: `edge://extensions`, Brave: `brave://extensions`) and switch on **Developer mode** (top right in Chrome, left sidebar in Edge).
 4. **Click Load unpacked** and choose the folder you unzipped: the one with `manifest.json` directly inside it.
 5. **Pin it:** click the puzzle-piece icon in the toolbar, then the pin next to Page to Markdown.
 
 **Keep the folder.** Your browser runs the extension from it, so don't delete or move it after loading.
 
-**To update**, unzip the new version over the old folder (replace the files) and click the reload icon on the extension's card. Your settings stay.
+**To update:** from 1.12 on, the extension tells you when a new version is out and walks you through it. On an older version, unzip the new version over the old folder (replace the files) and click the reload icon on the extension's card. Your settings stay.
 
 <details>
 <summary><b>If something goes wrong</b></summary>
