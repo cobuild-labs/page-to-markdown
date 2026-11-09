@@ -3,16 +3,18 @@ Copyright (c) 2026 CoBuild. All rights reserved.
 
 Page to Markdown is free to download and use, at home or at work.
 
-You may not, without written permission from CoBuild:
-- copy, modify, translate or make derivative works of the extension or any part of its code;
-- redistribute, publish, sell, rent, sublicense or otherwise share the extension or its code,
-  including uploading it to any extension store or website;
-- remove or change any copyright notice or branding.
+Please don't, without written permission from CoBuild:
+- copy, change or build on the extension or its code;
+- share, sell or re-upload it anywhere, including extension stores and download sites;
+- remove the CoBuild name or this notice.
 
-The only place to get Page to Markdown is from CoBuild (https://thecobuild.pages.dev/page-to-markdown/)
-or a store listing published by CoBuild.
+Get it only from CoBuild: https://thecobuild.pages.dev/page-to-markdown/
 
-THE EXTENSION IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
-BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL COBUILD BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE EXTENSION OR ITS USE.
+The files you export are yours. Their content still belongs to whoever made it,
+so please use the extension within each website's own rules.
+
+Page to Markdown is provided as is, without any warranty. As far as the law allows,
+CoBuild isn't liable for any loss that comes from using it.
+
+These terms are governed by the laws of Singapore.
+Full terms: https://thecobuild.pages.dev/terms/

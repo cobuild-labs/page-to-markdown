@@ -1,55 +1,31 @@
 # Privacy policy
 
-_Last updated: 4 November 2026_
+_Last updated: 9 November 2026_
 
-Page to Markdown is a browser extension that turns web pages, AI chats and video captions into Markdown files. It is built so that your data never leaves your computer.
+Page to Markdown is made by CoBuild. It's built so your pages and chats stay on your computer.
 
-## The short version
+## In short
 
-- No account, no sign-in.
-- No analytics, telemetry or tracking of any kind.
-- No servers. The extension does not send anything anywhere.
-- Your pages, chats and captions are read inside your own browser tab and saved straight to your computer (or your clipboard, if you choose that).
+- No account, no analytics, no ads, no tracking.
+- Everything you convert or export is processed in your browser and saved to your computer or clipboard. None of it is sent to us.
 
-## What is stored, and where
+## What it connects to
 
-| Data | Where | Why |
-|---|---|---|
-| Your settings (export defaults, file name pattern, toggles) | `chrome.storage.sync` in your browser | So your choices are remembered. If you use Chrome sync, Google syncs them between your own browsers. |
-| Selectors you picked on a site with "Pick on page" | `chrome.storage.local` in your browser | So you don't have to pick them again on that site. |
-| A count of successful exports, and whether you dismissed the "Enjoying it?" card | `chrome.storage.local` in your browser | To decide when to show that card, once. |
+- **The sites you're using.** To export an AI chat, it asks that site (Claude, ChatGPT, Gemini and others) for the conversation through the sign-in you already have open, the same way the site's own page does. Multi-page threads and captions load from the site you're on. Your sign-in is never stored or shared.
+- **GitHub, once a day.** It checks the latest version number so it can tell you when an update is out. The check carries nothing about you or your exports.
 
-None of this is sent to CoBuild or anyone else. "Reset all settings" in the Settings page clears it, and removing the extension deletes it.
+## What it keeps
 
-## What the extension reads
+Your settings, any page parts you picked on a site, and a count of exports (used once, to ask if you're enjoying it). All of it stays in your browser. "Reset all settings" clears it, and removing the extension deletes it.
 
-Only what you ask it to, when you ask:
+## Payments
 
-- **Convert a page**: the page in your current tab.
-- **Multi-page threads**: the pages of that thread, opened in background tabs of your own browser and closed again when done. They load with your normal cookies, exactly as if you had opened them yourself.
-- **AI chat export**: the chat open in your tab. On Claude, ChatGPT, Gemini, Grok, Perplexity and DeepSeek it asks that site for the conversation's data through your existing session, from inside your own tab, the same request the site's page makes. On other AI tools it reads the page. It never stores or sends your session, tokens or any credentials.
-- **Files from an AI chat** (only if you tick "Save the files it made"): the files that chat produced, and your own uploads if you tick that too, downloaded from the AI site into one `.zip` on your computer.
-- **Captions**: caption tracks of videos on the page, and caption files that the page's own player references.
-
-## Network requests
-
-The extension makes no requests of its own to any server we run (there are none). The only network requests it triggers are ones you asked for, to the sites you are already using:
-
-- loading the pages of a thread you asked it to convert;
-- loading a caption file the video player already points to;
-- fetching the chat you are exporting from that AI site (claude.ai, chatgpt.com, gemini.google.com, grok.com, perplexity.ai or chat.deepseek.com);
-- with "Save the files it made" ticked, downloading that chat's files from where the AI site keeps them. When a file server refuses downloads made from the page itself (Google's image server for Gemini pictures, for example), the extension's own background script downloads it instead. It sends your cookies only to the AI sites' own file servers; any other address is fetched without cookies.
-
-Everything that comes back goes straight into the file saved on your computer.
-
-## Support links
-
-The "Buy me a coffee" buttons open a Stripe payment page in a new tab. The extension does not see or handle any payment details. Stripe's own privacy policy applies on that page.
+"Buy me a coffee" opens a secure Stripe checkout. We get a note of the payment and whatever you choose to share there, never your card details.
 
 ## Changes
 
-Any change to this policy will be listed in the [changelog](CHANGELOG.md) and in this file's history.
+If this policy changes, we'll update this page and the date above.
 
 ## Contact
 
-Questions or concerns: please [open an issue](https://github.com/cobuild-labs/page-to-markdown/issues).
+Questions? Use the [contact form](https://thecobuild.pages.dev/contact/).
