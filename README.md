@@ -64,8 +64,9 @@ Markdown is the format AI tools read best. A clean `.md` file keeps the structur
 | **📚 Whole threads and lists** | Follows numbered page links, "Next" links, or "Next page" / "Load more" buttons, and stitches every page into one file. It works out which kind of paging a site uses on its own. |
 | **💬 Forums, post by post** | Recognises XenForo, Discourse, phpBB and vBulletin. Every post gets its number, author and date, quotes stay as quotes, and the pinned first post appears only once. |
 | **🤖 AI chats** | Exports Claude, ChatGPT, Gemini, Grok, Perplexity and DeepSeek conversations in full detail (thinking, every tool call, the sources), plus about 65 other AI tools through a general chat reader. [More below](#ai-chat-export). |
-| **📦 Files the AI made** | Optionally saves the chat as a `.zip` with every file the AI produced (and your uploads, if you like), linked from the chat. |
-| **🎬 Captions to Markdown** | Saves a video's closed captions as readable paragraphs with no timestamps. Works with YouTube, Vimeo and most HTML5 players, including players inside iframes. |
+| **📦 Files the AI made** <sup>Pro</sup> | Optionally saves the chat as a `.zip` with every file the AI produced (and your uploads, if you like), linked from the chat. |
+| **🗃️ Whole Claude projects** <sup>Pro</sup> | One `.zip` with a project's files, its instructions and every chat in it. |
+| **🎬 Captions to Markdown** | Saves a video's closed captions as readable paragraphs with no timestamps. Works with YouTube, Vimeo and most HTML5 players, including players inside iframes. With Pro, do a whole playlist or course in one go. |
 | **🧹 Cleaned-up version** <sup>beta</sup> | Leaves out ads, menus, sidebars, cookie banners, share buttons and newsletter boxes. |
 | **🎯 Pick on page** | For unusual layouts, hover and click the part of the page you want (or want to leave out). Your picks are remembered per site. |
 | **📋 Copy instead of save** | Send the result straight to your clipboard, ready to paste into a chat. |
@@ -128,12 +129,12 @@ Code and config files (`.js`, `.py`, `.css`, `.json` and the like) are left out 
 
 The extension is not on the Chrome Web Store yet, so you add it yourself. It works in Chrome, Edge, Brave, Arc and other Chromium browsers, on Mac and Windows.
 
-1. **[Download the zip](https://thecobuild.pages.dev/download/page-to-markdown)** (`page-to-markdown-v1.12.0.zip`).
+1. **[Download the zip](https://thecobuild.pages.dev/download/page-to-markdown)** (`page-to-markdown-v1.13.0.zip`).
 2. **Unzip it.**
    - **Mac:** double-click the zip in Downloads.
    - **Windows:** right-click the zip, choose **Extract All…**, then **Extract**.
 
-   You get a folder called `page-to-markdown-v1.12.0`. Move it somewhere it can stay, like Documents.
+   You get a folder called `page-to-markdown-v1.13.0`. Move it somewhere it can stay, like Documents.
 3. **Open your extensions page:** type `chrome://extensions` in the address bar (Edge: `edge://extensions`, Brave: `brave://extensions`) and switch on **Developer mode** (top right in Chrome, left sidebar in Edge).
 4. **Click Load unpacked** and choose the folder you unzipped: the one with `manifest.json` directly inside it.
 5. **Pin it:** click the puzzle-piece icon in the toolbar, then the pin next to Page to Markdown.
@@ -178,7 +179,7 @@ On older Mac keyboards the Option key may be labelled **alt**; it's the same key
 
 ## Privacy
 
-**No account, no analytics, no tracking, no servers.** Pages and chats are read inside your own browser tab and saved straight to your computer. When you export an AI chat, the extension asks that AI site for your conversation and its files through your own signed-in session, the same way the site's page does, and nothing goes anywhere else. The only things stored are your settings and a local export count (used to decide when to show a one-time "Enjoying it?" card). Full details in [PRIVACY.md](PRIVACY.md).
+**No analytics, no tracking, and no account needed for the free features.** Pages and chats are read inside your own browser tab and saved straight to your computer. When you export an AI chat, the extension asks that AI site for your conversation and its files through your own signed-in session, the same way the site's page does, and nothing goes anywhere else. The only things stored are your settings and a local export count (used to decide when to show a one-time "Enjoying it?" card). If you sign in for Pro, the extension only checks your plan; it never sends what you export. Full details in [PRIVACY.md](PRIVACY.md).
 
 <details>
 <summary><b>Why does it ask for access to all sites?</b></summary>
@@ -225,7 +226,7 @@ Not yet. It's built on Chrome's Manifest V3 and works in any Chromium browser.
 <details>
 <summary><b>Is it free?</b></summary>
 
-Yes, every feature is free. If it saves you time, you can <a href="https://buy.stripe.com/28EbJ2bJNeLS1FrfZ100002">buy me a coffee</a> ☕.
+The everyday features are free and need no account. Pro (saving the AI's files, whole Claude projects, captions from a whole playlist or course) is US$12 a year, US$25 once as a Founding member, or part of [CoBuild Pro](https://thecobuild.pages.dev/pro/). A free CoBuild account gets 5 Pro uses a month. Owning Unpack unlocks Pro too. See [the Pro plans](https://thecobuild.pages.dev/page-to-markdown/#pro).
 </details>
 
 ## Roadmap
@@ -244,7 +245,7 @@ I'd love to hear how you use it, what works and what doesn't.
 
 ## Support
 
-Page to Markdown is free and has no ads. It's built and maintained independently, so if it saves you time, a coffee keeps the next feature coming:
+The free features stay free, with no ads. It's built and maintained independently, so if it saves you time, a coffee keeps the next feature coming:
 
 <p>
   <a href="https://buy.stripe.com/dRmbJ2bJNfPWfwheUX00001"><img alt="Small coffee, S$3" src="https://img.shields.io/badge/☕_small_coffee-S$3-FFC21A?style=for-the-badge&labelColor=0F1730"></a>

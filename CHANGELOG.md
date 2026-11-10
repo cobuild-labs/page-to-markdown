@@ -2,6 +2,17 @@
 
 All notable changes to Page to Markdown. Dates are release dates.
 
+## 1.13.0 · 2026-11-10
+
+### Added
+- **Pro, with a free CoBuild account to try it.** Everyday features stay free with no account: pages, threads, AI chats and single video captions. The heavy-lifting features are now Pro: saving the files an AI made, unfinished Claude files, whole Claude projects, and captions from a whole playlist or course. A free CoBuild account gets 5 Pro uses a month; Pro makes them unlimited.
+- **Sign in from the CoBuild site.** In Settings, click Sign in, then "Connect Page to Markdown" on your account page. No password is ever stored in the extension.
+- Owning Unpack, CoBuild Pro or any paid CoBuild app unlocks Pro automatically.
+- A "CoBuild account" card in Settings, Pro tags on the Pro features, and a page that explains Free and Pro.
+
+### Changed
+- Your pages, chats and files are still converted in your browser and never sent anywhere. Signing in only checks your plan.
+
 ## 1.12.0 · 2026-11-09
 
 Everything since 1.9.0 (versions 1.10 and 1.11 were never released separately).
